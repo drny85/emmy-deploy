@@ -1,0 +1,15 @@
+.signup_container {
+  display: flexbox;
+  align-items: center;
+  justify-content: center;
+  background-color: beige;
+  width: 100vw;
+}
+
+.signup_container > .signup_body {
+  display: flexbox;
+  flex-direction: column;
+  background-color: burlywood;
+  box-shadow: 5px 8px 5px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}

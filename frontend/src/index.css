@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,200&display=swap');
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(360deg, rgb(248, 248, 248), white);
+  background-repeat: repeat;
+
+  /* overflow: hidden; */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+header {
+  position: sticky;
+  top: 0px;
+  width: 100%;
+  height: 70px;
+  margin-bottom: 20px;
+  z-index: 10000;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.product_card {
+  transition: transform 200ms ease-in;
+}
+
+.product_card:hover {
+  transform: scale(1.02);
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.imgHover:hover {
+  transform: scale(1.2);
+}
+
+.imgHover {
+  transition: transform 400ms ease-in;
+  max-height: 250px;
+  width: auto;
+}
+.py-3 {
+  padding: 3px 0px;
+}
+.store_detail_list > p {
+  padding: 10px 5px;
+}
+.store_detail_list {
+  padding: 10px;
+}
+
+/* .cart_list_item:hover {
+  transform: scale(1.023);
+  cursor: pointer;
+}
+.cart_list_item {
+  transition: transform 300ms ease-in;
+} */
+
+/* .cart_list_items > .cart_list_item {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.cart_list_item > .cart_list_img {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+} */

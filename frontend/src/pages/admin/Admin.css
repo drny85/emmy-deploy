@@ -1,0 +1,16 @@
+.admin_tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 1rem;
+  min-width: 20rem;
+  width: 20rem;
+  height: 12rem;
+  transition: width 200s ease-in;
+}
+
+.admin_tile:hover {
+  cursor: pointer;
+}
