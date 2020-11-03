@@ -269,9 +269,14 @@ const ProfilePage = () => {
           </Grid>
         </Grid>
       ) : (
-        <h3 style={{ textAlign: 'center' }}>
-          So far, Profile is only for Admin users
-        </h3>
+        <div className=''>
+          <h3 style={{ textAlign: 'center' }}>
+            So far, Profile is only for Admin users
+          </h3>
+          <Button variant='outlined' onClick={() => dispatch(logout())}>
+            Sign Out
+          </Button>
+        </div>
       )}
     </div>
   );

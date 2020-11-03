@@ -5,21 +5,20 @@ export const signUp = asyncHandler(async (req, res) => {
   const { email, password, name, lastName } = req.body;
   email.trim().toLowerCase();
 
-  const found = await User.findOne({ email }).populate('store');
+  const found = await User.findOne({ email });
   if (found) {
     res.status(400);
     throw new Error(`email: ${email} is already taken`);
   }
-  const user = new User({ name, password, email, lastName });
+  const user = await User.create({ name, password, email, lastName });
 
   const token = user.generateToken(user._id);
 
-  const userSaved = await user.save();
-  const { _id, isAdmin } = userSaved;
-  if (userSaved) {
+  const { _id, isAdmin } = user;
+  if (user) {
     return res
       .status(200)
-      .json({ _id, name, lastName, email, isAdmin, token, store: found.store });
+      .json({ _id, name, lastName, email, isAdmin, token, store: user.store });
   }
 
   res.status(400);
