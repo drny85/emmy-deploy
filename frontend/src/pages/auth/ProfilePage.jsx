@@ -102,6 +102,7 @@ const ProfilePage = () => {
       };
       setValues({ ...addressFormatted });
     }
+    // eslint-disable-next-line
   }, [user]);
   return (
     <div

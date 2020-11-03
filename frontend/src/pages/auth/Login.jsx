@@ -18,7 +18,7 @@ const Login = ({ location }) => {
   const history = useHistory();
   const redirect = location.state ? location.state.from.pathname : '/';
 
-  const { error, user } = useSelector((state) => state.userData);
+  const { error, user, loading } = useSelector((state) => state.userData);
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
@@ -63,6 +63,8 @@ const Login = ({ location }) => {
       history.push(redirect);
     }
   }, [user, history, redirect]);
+
+  if (loading) return <Loader />;
 
   return (
     <div

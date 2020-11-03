@@ -24,3 +24,25 @@ export const getCoupon = asyncHandler(async (req, res, next) => {
 
   return res.json(coupon);
 });
+
+export const getCoupons = asyncHandler(async (req, res, next) => {
+  const coupons = await Coupon.find().sort('-expires');
+  return res.json(coupons);
+});
+
+export const deleteCoupon = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+
+  const coupons = await Coupon.findByIdAndRemove(id).sort('-expires');
+
+  return res.json(coupons);
+});
+
+export const updateCoupon = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+
+  await Coupon.findByIdAndUpdate(id, req.body, { new: true });
+  const coupons = await Coupon.find().sort('-expires');
+
+  return res.json(coupons);
+});

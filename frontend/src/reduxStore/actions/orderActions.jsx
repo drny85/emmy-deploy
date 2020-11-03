@@ -70,5 +70,3 @@ export const updateOrder = (order) => async (dispatch, getState) => {
 };
 
 export const resetOrder = () => (dispatch) => dispatch({ type: RESET_ORDER });
-
-const setLoading = () => (dispatch) => dispatch({ type: ORDER_LOADING });

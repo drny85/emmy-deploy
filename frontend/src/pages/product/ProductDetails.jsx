@@ -33,7 +33,6 @@ import {
   resetProduct,
 } from '../../reduxStore/actions/products';
 import Loader from '../../components/Loader';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const useStyles = makeStyles((theme) => ({
   closeButton: {
@@ -52,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
 const ProductDetails = ({ match, history, full }) => {
   const classes = useStyles({ full });
   const { product } = useSelector((state) => state.productsData);
-  const { user } = useSelector((state) => state.userData);
   const id = match.params.id;
   const [sizeChecked, setChecked] = useState(null);
   const [noSizeSelected, setNoSizeSelected] = useState(false);

@@ -3,18 +3,17 @@ import React, { useEffect } from 'react';
 import SignupForm from '../../components/forms/SignupForm';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import Loader from '../../components/Loader';
 
 const Signup = ({ location }) => {
   const history = useHistory();
-  const { user, loading } = useSelector((state) => state.userData);
+  const { user } = useSelector((state) => state.userData);
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
   useEffect(() => {
     if (user) {
       history.push(redirect);
     }
-  }, [user]);
+  }, [user, history, redirect]);
 
   return (
     <div

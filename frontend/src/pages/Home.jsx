@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Divider,
@@ -20,10 +20,6 @@ import './Home.css';
 import EmptyPage from '../components/EmptyPage';
 import Loader from '../components/Loader';
 
-const initialValues = {
-  category: '',
-};
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -39,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const history = useHistory();
-  const linkRef = useRef();
   const dispatch = useDispatch();
   const [goto, setGoTo] = useState('');
 
@@ -70,10 +65,10 @@ const Home = () => {
         </h4>
         {user && user.isAdmin && (
           <Button
-            variant="contained"
+            variant='contained'
             component={Link}
-            to="/admin/product"
-            color="primary"
+            to='/admin/product'
+            color='primary'
           >
             Add my first product
           </Button>
@@ -84,7 +79,7 @@ const Home = () => {
 
   return (
     <div
-      className="home"
+      className='home'
       style={{
         display: 'flex',
         alignContent: 'center',
@@ -100,22 +95,22 @@ const Home = () => {
           alignItems: 'flex-end',
           justifyItems: 'center',
         }}
-        className="select"
+        className='select'
       >
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">
+        <FormControl variant='outlined' className={classes.formControl}>
+          <InputLabel id='demo-simple-select-label'>
             View By category
           </InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label="View By Category"
+            labelId='demo-simple-select-label'
+            id='demo-simple-select'
+            label='View By Category'
             value={goto}
             onChange={handleChange}
           >
             {categories.map((category) => (
               <MenuItem
-                className="capitalize"
+                className='capitalize'
                 style={{ marginTop: '20px' }}
                 key={category._id}
                 value={category._id}
@@ -128,12 +123,12 @@ const Home = () => {
           </Select>
         </FormControl>
       </div>
-      <Grid container alignContent="center">
+      <Grid container alignContent='center'>
         <Grid item>
           {categories.map((category) => {
             return (
               <section id={category._id} key={category._id}>
-                <div className="items ">
+                <div className='items '>
                   {products.filter((p) => p.category._id === category._id)
                     .length > 0 && (
                     <h2
@@ -162,7 +157,7 @@ const Home = () => {
                         </Grid>
                       ))}
                   </Grid>
-                  <Divider variant="middle" />
+                  <Divider variant='middle' />
                 </div>
               </section>
             );

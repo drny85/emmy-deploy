@@ -13,7 +13,7 @@ const HamNav = (props) => {
   const theme = useTheme();
   const [bgColor, setBgColor] = useState(false);
   const { quantity } = useSelector((state) => state.cartData);
-  const { loading, user } = useSelector((state) => state.userData);
+  const { user } = useSelector((state) => state.userData);
 
   const checkInput = () => {
     if (input.current.checked) {

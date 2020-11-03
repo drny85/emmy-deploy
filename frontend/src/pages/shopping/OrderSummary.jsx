@@ -12,7 +12,6 @@ import {
   TextField,
 } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
-import moment from 'moment';
 
 import { useSelector, useDispatch } from 'react-redux';
 import CartListItem from '../../components/CartListItem';
@@ -34,15 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const COUPONS = [
-  {
-    _id: 1,
-    code: 'dddd20',
-    value: 20,
-    expires: moment().add(1, 'hour'),
-  },
-];
-
 const OrderSummary = () => {
   const classes = useStyles();
   const [coupon, setCoupon] = useState('');
@@ -54,7 +44,7 @@ const OrderSummary = () => {
   const { cartItems, quantity, total } = useSelector((state) => state.cartData);
   const shipping = JSON.parse(localStorage.getItem('shippingAddress'));
   const [loadState, setLoadState] = useState({ loading: false, loaded: false });
-  const [isPaid, setIsPaid] = useState(false);
+
   const [processing, setProcessing] = useState(false);
   const paypal = useRef();
   const { user } = useSelector((state) => state.userData);
@@ -114,6 +104,10 @@ const OrderSummary = () => {
         } else {
           setError(true);
           setCouponError('Coupon expired');
+          setTimeout(() => {
+            setError(false);
+            setCouponError('');
+          }, 3000);
         }
       }
     } catch (error) {
@@ -128,7 +122,6 @@ const OrderSummary = () => {
   };
   const onSuccess = async (details, data) => {
     setProcessing(true);
-    setIsPaid(true);
 
     const paymentDetails = {
       orderId: data.orderID,
