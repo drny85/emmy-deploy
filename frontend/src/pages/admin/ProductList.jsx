@@ -8,7 +8,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import { Container, Grid, Typography } from '@material-ui/core';
+import {
+  Container,
+  Grid,
+  TablePagination,
+  Typography,
+} from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
@@ -21,6 +26,7 @@ import { getProducts, deleteProduct } from '../../reduxStore/actions/products';
 import Loader from '../../components/Loader';
 import { Link } from 'react-router-dom';
 import EmptyPage from '../../components/EmptyPage';
+import { useState } from 'react';
 
 const useStyles = makeStyles({
   table: {
@@ -40,8 +46,20 @@ const useStyles = makeStyles({
 
 const ProductList = ({ history }) => {
   const classes = useStyles();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { products, loading } = useSelector((state) => state.productsData);
   const dispatch = useDispatch();
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, products.length - page * rowsPerPage);
 
   const handleDelete = (id) => {
     dispatch(deleteProduct(id));
@@ -115,7 +133,7 @@ const ProductList = ({ history }) => {
                   'linear-gradient(90deg, rgba(52,56,55,0.7231267507002801), #ffffff)',
               }}
             >
-              <TableRow>
+              <TableRow hover>
                 <TableCell></TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Price</TableCell>
@@ -126,45 +144,65 @@ const ProductList = ({ history }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((product, i) => (
-                <TableRow key={product._id}>
-                  <TableCell>{i + 1}</TableCell>
-                  <TableCell className='capitalize' component='th' scope='row'>
-                    {product.name}
-                  </TableCell>
+              {products
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((product, i) => (
+                  <TableRow key={product._id}>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell
+                      className='capitalize'
+                      component='th'
+                      scope='row'
+                    >
+                      {product.name}
+                    </TableCell>
 
-                  <TableCell>${product.price}</TableCell>
-                  <TableCell className='capitalize'>
-                    {product.category.name}
-                  </TableCell>
-                  <TableCell align='center'>
-                    {product.available ? (
-                      <CheckIcon color='primary' />
-                    ) : (
-                      <CloseIcon color='secondary' />
-                    )}
-                  </TableCell>
-                  <TableCell align='center'>
-                    {product.estimatedDelivery}
-                  </TableCell>
-                  <TableCell align='center'>
-                    <>
-                      <EditOutlinedIcon
-                        style={{ marginRight: '15px' }}
-                        onClick={() =>
-                          history.push(`/admin/product/edit/${product._id}`)
-                        }
-                      />
-                      <DeleteForeverIcon
-                        htmlColor='red'
-                        onClick={() => handleDelete(product._id)}
-                      />
-                    </>
-                  </TableCell>
+                    <TableCell>${product.price}</TableCell>
+                    <TableCell className='capitalize'>
+                      {product.category.name}
+                    </TableCell>
+                    <TableCell align='center'>
+                      {product.available ? (
+                        <CheckIcon color='primary' />
+                      ) : (
+                        <CloseIcon color='secondary' />
+                      )}
+                    </TableCell>
+                    <TableCell align='center'>
+                      {product.estimatedDelivery}
+                    </TableCell>
+                    <TableCell align='center'>
+                      <>
+                        <EditOutlinedIcon
+                          style={{ marginRight: '15px' }}
+                          onClick={() =>
+                            history.push(`/admin/product/edit/${product._id}`)
+                          }
+                        />
+                        <DeleteForeverIcon
+                          htmlColor='red'
+                          onClick={() => handleDelete(product._id)}
+                        />
+                      </>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 33 * emptyRows }}>
+                  <TableCell colSpan={7} />
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 15, 20, 30]}
+            component='div'
+            count={products.length}
+            page={page}
+            onChangePage={handleChangePage}
+            rowsPerPage={rowsPerPage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Container>
     </div>

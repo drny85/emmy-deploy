@@ -9,8 +9,9 @@ import {
   TableBody,
   IconButton,
   Button,
+  TablePagination,
 } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../../reduxStore/actions/orderActions';
@@ -34,6 +35,17 @@ const AdminOrdersPage = ({ history }) => {
 
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, orders.length - page * rowsPerPage);
 
   useEffect(() => {
     dispatch(getOrders());
@@ -84,30 +96,46 @@ const AdminOrdersPage = ({ history }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order._id}>
-                <TableCell className='capitalize'>
-                  {order.customer.name}
-                </TableCell>
-                <TableCell className='capitalize'>
-                  {order.shippingAddress.street} {order.shippingAddress.state}
-                </TableCell>
-                <TableCell>${order.orderTotal}</TableCell>
-                <TableCell>
-                  {new Date(order.placedOn).toLocaleString()}
-                </TableCell>
-                <TableCell>{order.deliveredOn ? 'Yes' : 'No'}</TableCell>
-                <TableCell>
-                  <IconButton
-                    onClick={() => history.push(`/orders/${order._id}`)}
-                  >
-                    <EditIcon color='primary' />
-                  </IconButton>
-                </TableCell>
+            {orders
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((order) => (
+                <TableRow key={order._id}>
+                  <TableCell className='capitalize'>
+                    {order.customer.name}
+                  </TableCell>
+                  <TableCell className='capitalize'>
+                    {order.shippingAddress.street} {order.shippingAddress.state}
+                  </TableCell>
+                  <TableCell>${order.orderTotal}</TableCell>
+                  <TableCell>
+                    {new Date(order.placedOn).toLocaleString()}
+                  </TableCell>
+                  <TableCell>{order.deliveredOn ? 'Yes' : 'No'}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => history.push(`/orders/${order._id}`)}
+                    >
+                      <EditIcon color='primary' />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 33 * emptyRows }}>
+                <TableCell colSpan={7} />
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[10, 15, 20, 30]}
+          component='div'
+          count={orders.length}
+          page={page}
+          onChangePage={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );
