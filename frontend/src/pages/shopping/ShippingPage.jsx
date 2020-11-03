@@ -4,6 +4,8 @@ import { Form, useForm } from '../../components/useForm';
 import Controls from '../../components/controls/Controls';
 import states from '../../utils/states';
 
+import { useState } from 'react';
+
 const initialValues = {
   name: '',
   lastName: '',
@@ -17,6 +19,7 @@ const initialValues = {
 };
 
 const ShippingPage = ({ history }) => {
+  const [emailError, setEmailError] = useState(null);
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
 
@@ -46,10 +49,14 @@ const ShippingPage = ({ history }) => {
         fieldValues.phone.length >= 10 && fieldValues.phone.length > 1
           ? ''
           : 'Invalid phone.';
+
     if ('email' in fieldValues)
-      temp.email = /$^|.+@.+..+/.test(fieldValues.email)
+      temp.email = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
+        fieldValues.email
+      )
         ? ''
         : 'Email is not valid.';
+
     setErrors({
       ...temp,
     });
@@ -70,6 +77,13 @@ const ShippingPage = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
+      if (values.email === '') {
+        setEmailError('An email is required');
+        // setTimeout(() => {
+        //   setEmailError(null);
+        // }, 3000);
+        return;
+      }
       try {
         localStorage.setItem('shippingAddress', JSON.stringify(values));
         history.push('/order-summary');
@@ -93,7 +107,7 @@ const ShippingPage = ({ history }) => {
   }, []);
   return (
     <div
-      className="main"
+      className='main'
       style={{
         display: 'flex',
         justifyContent: 'center',
@@ -102,9 +116,9 @@ const ShippingPage = ({ history }) => {
     >
       <Grid
         container
-        alignItems="center"
-        justify="center"
-        direction="column"
+        alignItems='center'
+        justify='center'
+        direction='column'
         style={{ maxWidth: '920px', margin: 'auto' }}
       >
         <h2 style={{ textAlign: 'center', padding: '1rem' }}>
@@ -115,107 +129,107 @@ const ShippingPage = ({ history }) => {
           <Grid item container>
             <Grid item xs={12} md={6}>
               <Controls.Input
-                name="name"
+                name='name'
                 autoFocus
                 value={values.name}
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 error={errors.name}
                 onChange={handleInputChange}
-                label="First Name"
+                label='First Name'
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <Controls.Input
-                name="lastName"
+                name='lastName'
                 value={values.lastName}
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 error={errors.lastName}
                 onChange={handleInputChange}
-                label="Last Name"
+                label='Last Name'
               />
             </Grid>
           </Grid>
           <Grid item container>
             <Grid item xs={12} md={6}>
               <Controls.Input
-                name="address"
+                name='address'
                 value={values.address}
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 error={errors.address}
                 onChange={handleInputChange}
-                label="Address"
-                placeholder="Ex. 123 Main St"
+                label='Address'
+                placeholder='Ex. 123 Main St'
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <Controls.Input
-                name="apt"
+                name='apt'
                 value={values.apt}
                 onChange={handleInputChange}
                 inputProps={{ style: { textTransform: 'uppercase' } }}
-                label="Apartment / Suite"
-                placeholder="Ex. Apt 1A"
+                label='Apartment / Suite'
+                placeholder='Ex. Apt 1A'
               />
             </Grid>
           </Grid>
           <Grid item container>
             <Grid item xs={12} md={6}>
               <Controls.Input
-                name="city"
+                name='city'
                 value={values.city}
                 error={errors.city}
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 onChange={handleInputChange}
-                label="City"
-                placeholder="Please enter your city"
+                label='City'
+                placeholder='Please enter your city'
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <Controls.Select
-                name="state"
+                name='state'
                 value={values.state}
                 error={errors.state}
                 inputProps={{ style: { textTransform: 'capitalize' } }}
                 onChange={handleInputChange}
-                label="State"
+                label='State'
                 options={states}
-                placeholder="Please enter your state"
+                placeholder='Please enter your state'
               />
             </Grid>
           </Grid>
           <Grid item xs={12}>
             <Controls.Input
-              name="zipcode"
+              name='zipcode'
               value={values.zipcode}
               inputProps={{ maxLength: 5 }}
               error={errors.zipcode}
               onChange={handleInputChange}
-              label="Postal Code"
-              placeholder="Ex 12345"
+              label='Postal Code'
+              placeholder='Ex 12345'
             />
             <Controls.Input
-              name="phone"
+              name='phone'
               value={values.phone}
               error={errors.phone}
               onChange={handleInputChange}
-              label="Phone"
-              placeholder="Ex. (555)-555-0000"
+              label='Phone'
+              placeholder='Ex. (555)-555-0000'
             />
             <Controls.Input
-              name="email"
+              name='email'
               value={values.email}
-              error={errors.email}
+              error={errors.email || emailError}
               onChange={handleInputChange}
-              label="Email Address"
-              placeholder="Ex. johndoe@email.com"
+              label='Email Address'
+              placeholder='Ex. johndoe@email.com'
             />
           </Grid>
 
-          <div className="btn_div">
-            <Controls.Button text="Continue to Payment" type="submit" />
+          <div className='btn_div'>
+            <Controls.Button text='Continue to Payment' type='submit' />
             <Controls.Button
-              text="Reset Form"
-              color="secondary"
+              text='Reset Form'
+              color='secondary'
               onClick={resetForm}
             />
           </div>

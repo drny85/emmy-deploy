@@ -36,7 +36,6 @@ export const createOrUpdateStore = asyncHandler(async (req, res, next) => {
       res.status(404);
       throw new Error('no store updated');
     }
-    console.log('UPDATED', updated);
 
     const token = user.generateToken(req.user._id);
     return res.json({
