@@ -231,6 +231,7 @@ const ShippingPage = ({ history }) => {
               value={values.zipcode}
               inputProps={{ maxLength: 5 }}
               error={errors.zipcode}
+              type='numeric'
               onChange={handleInputChange}
               label='Postal Code'
               placeholder='Ex 12345'

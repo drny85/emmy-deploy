@@ -93,6 +93,7 @@ const SignupForm = () => {
           <Controls.Input
             name='email'
             value={values.email}
+            type='email'
             error={errors.email}
             inputProps={{ style: { textTransform: 'lowercase' } }}
             label='Email'
