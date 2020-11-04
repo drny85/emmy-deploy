@@ -37,7 +37,7 @@ const SignupForm = () => {
         fieldValues.password.length !== 0 ? '' : 'Password is required.';
     if ('confirm' in fieldValues)
       temp.confirm =
-        fieldValues.confirm === fieldValues.password
+        fieldValues.confirm === values.password
           ? ''
           : 'Passwords do not match.';
     setErrors({
