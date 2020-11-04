@@ -1,10 +1,13 @@
-import { Grid } from '@material-ui/core';
+import { Checkbox, FormControlLabel, Grid } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { Form, useForm } from '../../components/useForm';
 import Controls from '../../components/controls/Controls';
 import states from '../../utils/states';
+import { signup } from '../../reduxStore/actions/userActions';
 
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Message from '../../components/Message';
 
 const initialValues = {
   name: '',
@@ -19,7 +22,12 @@ const initialValues = {
 };
 
 const ShippingPage = ({ history }) => {
+  const dispatch = useDispatch();
+  const { error, user } = useSelector((state) => state.userData);
   const [emailError, setEmailError] = useState(null);
+  const [createAccount, setCreateAccount] = useState(false);
+  const [passwordError, setPasswordError] = useState(null);
+  const [password, setPassword] = useState('');
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
 
@@ -74,7 +82,7 @@ const ShippingPage = ({ history }) => {
     setValues,
   } = useForm(initialValues, true, validate);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
       if (values.email === '') {
@@ -84,8 +92,26 @@ const ShippingPage = ({ history }) => {
         // }, 3000);
         return;
       }
+      if (createAccount && password === '') {
+        setPasswordError('password is needed for your account');
+        return;
+      }
       try {
         localStorage.setItem('shippingAddress', JSON.stringify(values));
+        if (createAccount) {
+          //create account for customer
+          const registered = await dispatch(
+            signup({
+              name: values.name,
+              lastName: values.lastName,
+              email: values.email,
+              password: password,
+            })
+          );
+          if (!registered) {
+            return;
+          }
+        }
         history.push('/order-summary');
       } catch (error) {
         console.error(error);
@@ -94,6 +120,10 @@ const ShippingPage = ({ history }) => {
 
       // resetForm()
     }
+  };
+
+  const handleCreateAccount = () => {
+    setCreateAccount(!createAccount);
   };
 
   useEffect(() => {
@@ -105,7 +135,7 @@ const ShippingPage = ({ history }) => {
       setValues({ ...shipping });
     }
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
   return (
     <div
       className='main'
@@ -113,20 +143,17 @@ const ShippingPage = ({ history }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        maxWidth: '1080px',
+        margin: '30px auto',
       }}
     >
-      <Grid
-        container
-        alignItems='center'
-        justify='center'
-        direction='column'
-        style={{ maxWidth: '920px', margin: 'auto' }}
-      >
+      <Grid container alignItems='center' justify='center' direction='column'>
         <h2 style={{ textAlign: 'center', padding: '1rem' }}>
           Shipping Address
         </h2>
 
         <Form onSubmit={handleSubmit}>
+          {error && <Message type='error'>{error}</Message>}
           <Grid item container>
             <Grid item xs={12} md={6}>
               <Controls.Input
@@ -220,11 +247,39 @@ const ShippingPage = ({ history }) => {
               name='email'
               value={values.email}
               error={errors.email || emailError}
+              inputProps={{ style: { textTransform: 'lowercase' } }}
               onChange={handleInputChange}
               label='Email Address'
               placeholder='Ex. johndoe@email.com'
             />
+
+            {createAccount && (
+              <Controls.Input
+                name='password'
+                label='Password'
+                type='password'
+                error={passwordError}
+                placeholder='Enter a password for your account'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            )}
           </Grid>
+          {!user && (
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    style={{ paddingLeft: '20px' }}
+                    checked={createAccount}
+                    onChange={handleCreateAccount}
+                    name='account'
+                  />
+                }
+                label='create account'
+              />
+            </Grid>
+          )}
 
           <div className='btn_div'>
             <Controls.Button text='Continue to Payment' type='submit' />

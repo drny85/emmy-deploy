@@ -20,9 +20,11 @@ export const signup = ({ name, lastName, email, password }) => async (
     });
     dispatch({ type: USER_SIGN_UP, payload: data });
     localStorage.setItem('emmyUserData', JSON.stringify(data));
+    return true;
   } catch (error) {
     console.error(error);
     dispatch({ type: USER_ERROR, payload: responseError(error) });
+    return false;
   }
 };
 

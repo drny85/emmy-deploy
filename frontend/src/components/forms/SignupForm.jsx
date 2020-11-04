@@ -94,6 +94,7 @@ const SignupForm = () => {
             name='email'
             value={values.email}
             error={errors.email}
+            inputProps={{ style: { textTransform: 'lowercase' } }}
             label='Email'
             onChange={handleInputChange}
           />
