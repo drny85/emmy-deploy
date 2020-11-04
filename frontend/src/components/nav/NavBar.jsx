@@ -7,6 +7,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import './NavBar.css';
 import { useState } from 'react';
+import { set } from 'mongoose';
 
 const HamNav = (props) => {
   const input = useRef();
@@ -18,12 +19,15 @@ const HamNav = (props) => {
   const checkInput = () => {
     if (input.current.checked) {
       input.current.checked = false;
+      setBgColor(false);
     }
   };
 
   const handleBgColor = () => {
     if (input.current.checked) {
       setBgColor(true);
+    } else if (input.current.checked === false) {
+      setBgColor(false);
     } else {
       setBgColor(false);
     }

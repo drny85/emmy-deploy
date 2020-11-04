@@ -1,6 +1,6 @@
 :root {
   --primary-color: #01579b;
-  --overlay-color: rgba(16, 17, 19, 0.95);
+  --overlay-color: rgb(17, 18, 20);
   --menu-speed: 0.75s;
   --secondary-color: #455a64;
   --white-text-color: #fff;
@@ -26,7 +26,7 @@
   width: 50px;
   height: 70px;
   opacity: 0;
-  /* color: var(--secondary-color); */
+  /* color: var(--primary-color); */
 }
 
 .menu-wrap .hamburger {
