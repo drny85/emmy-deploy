@@ -155,7 +155,7 @@ const ShippingPage = ({ history }) => {
         <Form onSubmit={handleSubmit}>
           {error && <Message type='error'>{error}</Message>}
           <Grid item container>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} md={6}>
               <Controls.Input
                 name='name'
                 autoFocus
@@ -166,7 +166,7 @@ const ShippingPage = ({ history }) => {
                 label='First Name'
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={6} md={6}>
               <Controls.Input
                 name='lastName'
                 value={values.lastName}
@@ -178,7 +178,7 @@ const ShippingPage = ({ history }) => {
             </Grid>
           </Grid>
           <Grid item container>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={7} md={6}>
               <Controls.Input
                 name='address'
                 value={values.address}
@@ -189,7 +189,7 @@ const ShippingPage = ({ history }) => {
                 placeholder='Ex. 123 Main St'
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={5} md={6}>
               <Controls.Input
                 name='apt'
                 value={values.apt}
@@ -201,7 +201,7 @@ const ShippingPage = ({ history }) => {
             </Grid>
           </Grid>
           <Grid item container>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={7} md={6}>
               <Controls.Input
                 name='city'
                 value={values.city}
@@ -212,7 +212,7 @@ const ShippingPage = ({ history }) => {
                 placeholder='Please enter your city'
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={5} md={6}>
               <Controls.Select
                 name='state'
                 value={values.state}
@@ -237,6 +237,7 @@ const ShippingPage = ({ history }) => {
             />
             <Controls.Input
               name='phone'
+              type='tel'
               value={values.phone}
               error={errors.phone}
               onChange={handleInputChange}
@@ -245,6 +246,7 @@ const ShippingPage = ({ history }) => {
             />
             <Controls.Input
               name='email'
+              type='email'
               value={values.email}
               error={errors.email || emailError}
               inputProps={{ style: { textTransform: 'lowercase' } }}
