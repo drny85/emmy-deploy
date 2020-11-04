@@ -251,7 +251,7 @@ const ProductDetails = ({ match, history, full }) => {
             </Paper>
           )}
 
-          <Dialog open={open}>
+          <Dialog fullWidth onBackdropClick={() => setOpen(false)} open={open}>
             <DialogTitle>
               <IconButton
                 aria-label='close'
