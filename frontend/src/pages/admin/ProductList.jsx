@@ -79,7 +79,7 @@ const ProductList = ({ history }) => {
         <Button
           variant='contained'
           component={Link}
-          to='/admin/product'
+          to='/admin/add/product'
           color='primary'
         >
           Add my first product
@@ -113,7 +113,7 @@ const ProductList = ({ history }) => {
               startIcon={<AddIcon />}
               color='primary'
               component={Link}
-              to='/admin/product'
+              to='/admin/add/product'
             >
               Add Product
             </Button>

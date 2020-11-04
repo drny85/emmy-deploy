@@ -92,13 +92,18 @@ function App() {
             <AdminRoutes path='/admin/coupons' component={CouponsPage} />
             <AdminRoutes path='/admin/category' component={CategoryPage} />
             <AdminRoutes path='/admin/orders' component={AdminOrdersPage} />
-            <AdminRoutes path='/admin/products' component={ProductList} />
+            <AdminRoutes path='/admin/products' exact component={ProductList} />
+            <AdminRoutes
+              path='/admin/add/product'
+              exact
+              component={AddProduct}
+            />
             <AdminRoutes
               path='/admin/product/edit/:id'
               component={ProductEdit}
             />
             <AdminRoutes path='/admin' component={AdminPage} />
-            <AdminRoutes path='/admin/product' component={AddProduct} />
+
             <Route path='/product/:id' component={ProductDetails} />
             <Route path='/signup' component={Signup} />
             <Route path='/login' component={Login} />
