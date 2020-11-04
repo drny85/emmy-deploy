@@ -32,16 +32,10 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#4f83cc',
-      main: '#2e7d32',
-      dark: '#002f6c',
-      contrastText: '#f5f5f5',
+      main: '#009688',
     },
     secondary: {
-      light: '#718792',
-      main: '#00544a',
-      dark: '#1c313a',
-      contrastText: '#eceff1',
+      main: '#6699CC',
     },
   },
 });
