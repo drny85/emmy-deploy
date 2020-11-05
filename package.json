@@ -18,7 +18,6 @@
   "author": "Robert Melendez",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^7.3.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
@@ -27,7 +26,8 @@
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.9",
-    "multer": "^1.4.2"
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.14"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",

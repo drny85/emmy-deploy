@@ -28,6 +28,8 @@ import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import CouponsPage from './pages/admin/CouponsPage';
 import AdminRoutes from './components/AdminRoutes';
 import ProtectedRoutes from './components/ProtectedRoutes';
+import PasswordReset from './pages/auth/PasswordReset';
+import ResetPasswordLink from './pages/auth/ResetPasswordLink';
 
 const theme = createMuiTheme({
   palette: {
@@ -83,6 +85,9 @@ function App() {
             <Route path='/orders/:id' component={OrderDetails} />
             <ProtectedRoutes path='/orders' component={MyOrders} />
             <Route path='/order-summary' component={OrderSummary} />
+            <Route path='/reset/:token' exact component={PasswordReset} />
+            <Route path='/resetLink' exact component={ResetPasswordLink} />
+
             <AdminRoutes path='/admin/coupons' component={CouponsPage} />
             <AdminRoutes path='/admin/category' component={CategoryPage} />
             <AdminRoutes path='/admin/orders' component={AdminOrdersPage} />

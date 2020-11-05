@@ -108,13 +108,22 @@ const Login = ({ location }) => {
             />
 
             {/* <Controls.Select  /> */}
-            <div style={{ margin: '15px 10px' }}>
-              <Controls.Button type='submit' text='Submit' />
+            <div
+              style={{
+                margin: '15px 10px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Controls.Button type='submit' text='Login' />
               <Controls.Button
-                text='Reset'
+                text='Reset Form'
                 color='default'
                 onClick={resetForm}
               />
+              <Link to='/resetLink' style={{ marginLeft: '8px' }}>
+                Forgot password?
+              </Link>
             </div>
           </Grid>
           <Grid item xs={12}>
