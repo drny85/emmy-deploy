@@ -30,6 +30,7 @@ import AdminRoutes from './components/AdminRoutes';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PasswordReset from './pages/auth/PasswordReset';
 import ResetPasswordLink from './pages/auth/ResetPasswordLink';
+import ContactUs from './pages/contact/ContactUs';
 
 const theme = createMuiTheme({
   palette: {
@@ -79,35 +80,36 @@ function App() {
         <div style={{ height: '100vh' }}>
           <NavBar />
           <Switch>
-            <Route path='/cart' component={ShoppingCartScreen} />
-            <ProtectedRoutes path='/profile' component={ProfilePage} />
-            <Route path='/shipping' component={ShippingPage} />
-            <Route path='/orders/:id' component={OrderDetails} />
-            <ProtectedRoutes path='/orders' component={MyOrders} />
-            <Route path='/order-summary' component={OrderSummary} />
-            <Route path='/reset/:token' exact component={PasswordReset} />
-            <Route path='/resetLink' exact component={ResetPasswordLink} />
+            <Route path="/cart" component={ShoppingCartScreen} />
+            <ProtectedRoutes path="/profile" component={ProfilePage} />
+            <Route path="/shipping" component={ShippingPage} />
+            <Route path="/orders/:id" component={OrderDetails} />
+            <ProtectedRoutes path="/orders" component={MyOrders} />
+            <Route path="/order-summary" component={OrderSummary} />
+            <Route path="/reset/:token" exact component={PasswordReset} />
+            <Route path="/resetLink" exact component={ResetPasswordLink} />
+            <Route path="/contact-us" exact component={ContactUs} />
 
-            <AdminRoutes path='/admin/coupons' component={CouponsPage} />
-            <AdminRoutes path='/admin/category' component={CategoryPage} />
-            <AdminRoutes path='/admin/orders' component={AdminOrdersPage} />
-            <AdminRoutes path='/admin/products' exact component={ProductList} />
+            <AdminRoutes path="/admin/coupons" component={CouponsPage} />
+            <AdminRoutes path="/admin/category" component={CategoryPage} />
+            <AdminRoutes path="/admin/orders" component={AdminOrdersPage} />
+            <AdminRoutes path="/admin/products" exact component={ProductList} />
             <AdminRoutes
-              path='/admin/add/product'
+              path="/admin/add/product"
               exact
               component={AddProduct}
             />
             <AdminRoutes
-              path='/admin/product/edit/:id'
+              path="/admin/product/edit/:id"
               component={ProductEdit}
             />
-            <AdminRoutes path='/admin' component={AdminPage} />
+            <AdminRoutes path="/admin" component={AdminPage} />
 
-            <Route path='/product/:id' component={ProductDetails} />
-            <Route path='/signup' component={Signup} />
-            <Route path='/login' component={Login} />
+            <Route path="/product/:id" component={ProductDetails} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
 
-            <Route exact path='/' component={Home} />
+            <Route exact path="/" component={Home} />
           </Switch>
         </div>
       </Router>

@@ -37,13 +37,13 @@ const HamNav = (props) => {
     <header>
       <div
         style={{ backgroundColor: theme.palette.primary.main }}
-        className='menu-wrap'
+        className="menu-wrap"
       >
         <input
           ref={input}
-          type='checkbox'
+          type="checkbox"
           onChange={handleBgColor}
-          className='toggler'
+          className="toggler"
         />
 
         <div
@@ -52,33 +52,38 @@ const HamNav = (props) => {
               ? 'rgba(16, 17, 19, 0.95)'
               : theme.palette.primary.main,
           }}
-          className='hamburger'
+          className="hamburger"
         >
           <div></div>
         </div>
 
-        <div className='menu'>
+        <div className="menu">
           <div>
             <div>
               <ul>
                 <li>
-                  <Link onClick={checkInput} to='/'>
+                  <Link onClick={checkInput} to="/">
                     Home
                   </Link>
                 </li>
                 {user && user.isAdmin && (
                   <li>
-                    <Link onClick={checkInput} to='/admin'>
+                    <Link onClick={checkInput} to="/admin">
                       Admin
                     </Link>
                   </li>
                 )}
+                <li>
+                  <Link onClick={checkInput} to="/contact-us">
+                    Contact Us
+                  </Link>
+                </li>
                 {user && user ? (
                   <li>
                     <Link
-                      className='capitalize bold'
+                      className="capitalize bold"
                       onClick={checkInput}
-                      to='/profile'
+                      to="/profile"
                     >
                       {user.name}
                     </Link>
@@ -86,9 +91,9 @@ const HamNav = (props) => {
                 ) : (
                   <li>
                     <Link
-                      className='capitalize bold'
+                      className="capitalize bold"
                       onClick={checkInput}
-                      to='/login'
+                      to="/login"
                     >
                       {'Login'}
                     </Link>
@@ -98,22 +103,22 @@ const HamNav = (props) => {
             </div>
           </div>
         </div>
-        <div className='links'>
+        <div className="links">
           <Hidden mdUp>
             <ul>
               <li style={{ marginRight: 'auto', marginLeft: '70px' }}>
                 <Link
                   style={{ fontSize: '1.1rem' }}
                   onClick={checkInput}
-                  to='/'
+                  to="/"
                 >
                   Emmy-Dash
                 </Link>
               </li>
               <li>
-                <Link onClick={checkInput} to='/cart'>
+                <Link onClick={checkInput} to="/cart">
                   {' '}
-                  <Badge badgeContent={quantity} color='secondary'>
+                  <Badge badgeContent={quantity} color="secondary">
                     <ShoppingCartIcon />
                   </Badge>
                 </Link>
@@ -123,28 +128,33 @@ const HamNav = (props) => {
           <Hidden smDown>
             <ul>
               <li style={{ marginRight: 'auto', marginLeft: '70px' }}>
-                <Link onClick={checkInput} to='/'>
+                <Link onClick={checkInput} to="/">
                   Emmy-Dash
                 </Link>
               </li>
               <li>
-                <Link onClick={checkInput} to='/'>
+                <Link onClick={checkInput} to="/">
                   Home
                 </Link>
               </li>
               {user && user.isAdmin && (
                 <li>
-                  <Link onClick={checkInput} to='/admin'>
+                  <Link onClick={checkInput} to="/admin">
                     Admin
                   </Link>
                 </li>
               )}
+              <li>
+                <Link onClick={checkInput} to="/contact-us">
+                  Contact Us
+                </Link>
+              </li>
               {user && user ? (
                 <li>
                   <Link
-                    className='capitalize bold'
+                    className="capitalize bold"
                     onClick={checkInput}
-                    to='/profile'
+                    to="/profile"
                   >
                     {user.name}
                   </Link>
@@ -152,9 +162,9 @@ const HamNav = (props) => {
               ) : (
                 <li>
                   <Link
-                    className='capitalize bold'
+                    className="capitalize bold"
                     onClick={checkInput}
-                    to='/login'
+                    to="/login"
                   >
                     {'Login'}
                   </Link>
@@ -163,9 +173,9 @@ const HamNav = (props) => {
 
               <Hidden smDown>
                 <li>
-                  <Link onClick={checkInput} to='/cart'>
+                  <Link onClick={checkInput} to="/cart">
                     {' '}
-                    <Badge badgeContent={quantity} color='primary'>
+                    <Badge badgeContent={quantity} color="primary">
                       <ShoppingCartIcon />
                     </Badge>
                   </Link>
