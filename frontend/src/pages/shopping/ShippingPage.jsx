@@ -273,13 +273,14 @@ const ShippingPage = ({ history }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    style={{ paddingLeft: '20px' }}
+                    style={{ paddingLeft: '15px' }}
                     checked={createAccount}
                     onChange={handleCreateAccount}
                     name='account'
                   />
                 }
                 label='create account'
+                style={{ color: 'gray' }}
               />
             </Grid>
           )}

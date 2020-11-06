@@ -23,8 +23,14 @@ export const sendEmail = async ({ to, from, subject, html }) => {
 
       html: html,
     };
-    const email = await transport.sendMail(msg);
-    console.log(email);
+    transport.sendMail(msg, (err, info) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      console.log(info);
+    });
   } catch (error) {
     console.error(error);
   }

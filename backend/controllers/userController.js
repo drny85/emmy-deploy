@@ -144,7 +144,6 @@ export const resetPasswordLink = asyncHandler(async (req, res, next) => {
     await user.save();
 
     const url = `${req.protocol}://${req.hostname}:3000${req.url}/${token}`;
-    console.log(url);
 
     const msg = {
       to: req.body.email,

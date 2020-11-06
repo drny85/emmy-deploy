@@ -16,6 +16,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
 import emailRoutes from './routes/emailRoutes.js';
 import storeRoutes from './routes/storeRoutes.js';
+import contactusRoutes from './routes/contactusRoutes.js';
 
 import { errorHandler, notFound } from './middleware/errorMidleware.js';
 
@@ -43,6 +44,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/store', storeRoutes);
+app.use('/api/contact-us', contactusRoutes);
 
 app.get('/api/paypal', (req, res) => {
   let client_id;

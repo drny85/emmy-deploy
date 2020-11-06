@@ -3,11 +3,11 @@
   flex-direction: column;
   height: 22rem;
   background-color: 'white';
-  min-width: 300px;
+  min-width: 19rem;
   border-radius: 10px;
   flex: 1;
   margin: 1rem;
-  max-width: 23rem;
+  max-width: 22rem;
   position: relative;
   box-shadow: 5px 8px 0px rgba(0, 0, 0, 0.09);
 }
@@ -33,6 +33,7 @@
 .product_card_body_description {
   display: block;
   min-height: 4rem;
+
   height: 5rem;
   width: '100%';
 
