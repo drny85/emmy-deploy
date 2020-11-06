@@ -6,24 +6,21 @@ import Product from '../models/productModel.js';
 dotenv.config();
 
 const transport = nodeMailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      type: 'login',
-      user: process.env.EMAIL_ACCOUNT,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-  
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    type: 'login',
+    user: process.env.EMAIL_ACCOUNT,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 export const contactUs = asyncHandler(async (req, res, next) => {
   const { name, lastName, from, subject, body } = req.body;
   const { message, product } = body;
 
-  let prod
-
-  
+  let prod;
 
   if (product !== '') {
     const pro = await Product.findById(product);
@@ -48,19 +45,35 @@ export const contactUs = asyncHandler(async (req, res, next) => {
             <p style="box-sizing: border-box; margin: 0; padding: 10px 5px;"><strong style="box-sizing: border-box; margin: 0; padding: 0; text-transform: capitalize;">Name:</strong> ${pro.name}</p>
             <p style="box-sizing: border-box; margin: 0; padding: 10px 5px;"><strong style="box-sizing: border-box; margin: 0; padding: 0; ">Price:</strong>  $${pro.price}</p>
             
-            <p style="box-sizing: border-box; margin: 0; padding: 10px 5px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui quia at obcaecati consequuntur omnis debitis praesentium earum unde, hic odit recusandae soluta distinctio eum ad repellendus provident maxime libero explicabo.</p>
+            <p style="box-sizing: border-box; margin: 0; padding: 10px 5px;">${message}</p>
         </div>
     </div>
     
 </body>
 </html>
-  `
+  `;
 
+    transport.sendMail(
+      {
+        to: 'robertm3lendez@gmail.com',
+        from: from,
+        subject:
+          subject === 'product'
+            ? 'Question about a Product'
+            : 'A General Question',
+        html: html,
+      },
+      (err, info) => {
+        if (err) {
+          console.error(err);
+          res.status(400);
+          throw new Error('error sending email');
+        }
 
-    
+        return res.status(200).json(true);
+      }
+    );
   }
-
-  
 
   return res.json(true);
 });

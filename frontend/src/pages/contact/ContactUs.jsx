@@ -20,11 +20,12 @@ const initialValues = {
   emailBody: '',
 };
 
-const ContactUs = () => {
+const ContactUs = ({ history }) => {
   const { user } = useSelector((state) => state.userData);
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [subject, setSubject] = useState('');
+  const [success, setSuccess] = useState(false);
   const [category, setCategory] = useState('');
   const [product, setProduct] = useState('');
   const [choices, setChioces] = useState([]);
@@ -99,7 +100,12 @@ const ContactUs = () => {
       };
 
       const { data } = await axios.post('/api/contact-us', msg);
-      console.log(data);
+      if (data) {
+        setSuccess(true);
+        setTimeout(() => {
+          history.replace('/');
+        }, 5000);
+      }
     } catch (error) {
       console.error(responseError(error));
     }
@@ -130,112 +136,120 @@ const ContactUs = () => {
         width: '90vw',
       }}
     >
-      <h3>Contact Us</h3>
-      <Form onSubmit={sendEmail} style={{ width: '80%' }}>
-        {error && <Message type='error'>{error}</Message>}
-        <Grid container>
-          <Grid item xs={6}>
+      {success ? (
+        <h4 style={{ textAlign: 'center', marginTop: '100px' }}>
+          You email has been. We will cantact you witthin 48 hrs
+        </h4>
+      ) : (
+        <>
+          <h3>Contact Us</h3>
+          <Form onSubmit={sendEmail} style={{ width: '80%' }}>
+            {error && <Message type='error'>{error}</Message>}
+            <Grid container>
+              <Grid item xs={6}>
+                <Controls.Input
+                  name='name'
+                  inputProps={{ style: { textTransform: 'capitalize' } }}
+                  label='First Name'
+                  onChange={handleInputChange}
+                  value={values.name}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Controls.Input
+                  name='lastName'
+                  inputProps={{ style: { textTransform: 'capitalize' } }}
+                  label='Last Name'
+                  onChange={handleInputChange}
+                  value={values.lastName}
+                />
+              </Grid>
+            </Grid>
             <Controls.Input
-              name='name'
-              inputProps={{ style: { textTransform: 'capitalize' } }}
-              label='First Name'
+              name='email'
+              value={values.email}
+              error={
+                values.email !== '' &&
+                !/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
+                  values.email
+                )
+              }
+              type='email'
+              label='Email Address'
               onChange={handleInputChange}
-              value={values.name}
             />
-          </Grid>
-          <Grid item xs={6}>
-            <Controls.Input
-              name='lastName'
-              inputProps={{ style: { textTransform: 'capitalize' } }}
-              label='Last Name'
-              onChange={handleInputChange}
-              value={values.lastName}
+            <Controls.Select
+              name='subject'
+              onChange={handleSubjectChange}
+              value={subject}
+              label='Select a Subject'
+              options={[
+                { id: 'general', name: 'General Question' },
+                { id: 'product', name: 'About a Product' },
+              ]}
             />
-          </Grid>
-        </Grid>
-        <Controls.Input
-          name='email'
-          value={values.email}
-          error={
-            values.email !== '' &&
-            !/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
-              values.email
-            )
-          }
-          type='email'
-          label='Email Address'
-          onChange={handleInputChange}
-        />
-        <Controls.Select
-          name='subject'
-          onChange={handleSubjectChange}
-          value={subject}
-          label='Select a Subject'
-          options={[
-            { id: 'general', name: 'General Question' },
-            { id: 'product', name: 'About a Product' },
-          ]}
-        />
-        {subject === 'product' && (
-          <Controls.Select
-            name='category'
-            onChange={handleCategoryChange}
-            value={category}
-            label='Select a Category'
-            inputProps={{ style: { textTransform: 'capitalize' } }}
-            options={categories}
-          />
-        )}
-        {category && (
-          <Controls.Select
-            name='product'
-            onChange={handleProductChange}
-            value={product}
-            label='Select a Product'
-            inputProps={{ style: { textTransform: 'capitalize' } }}
-            options={[
-              ...choices
-                .filter((pro) => pro.category._id === category)
-                .map((p) => ({ _id: p._id, name: p.name })),
-            ]}
-          />
-        )}
-        {product && category && (
-          <p style={{ color: 'gray', padding: '5px 12px' }}>
-            Note: you are writing to us becuase you have a question about{' '}
-            {choices.find((p) => p._id === product).name}
-          </p>
-        )}
+            {subject === 'product' && (
+              <Controls.Select
+                name='category'
+                onChange={handleCategoryChange}
+                value={category}
+                label='Select a Category'
+                inputProps={{ style: { textTransform: 'capitalize' } }}
+                options={categories}
+              />
+            )}
+            {category && (
+              <Controls.Select
+                name='product'
+                onChange={handleProductChange}
+                value={product}
+                label='Select a Product'
+                inputProps={{ style: { textTransform: 'capitalize' } }}
+                options={[
+                  ...choices
+                    .filter((pro) => pro.category._id === category)
+                    .map((p) => ({ _id: p._id, name: p.name })),
+                ]}
+              />
+            )}
+            {product && category && (
+              <p style={{ color: 'gray', padding: '5px 12px' }}>
+                Note: you are writing to us becuase you have a question about{' '}
+                {choices.find((p) => p._id === product).name}
+              </p>
+            )}
 
-        <Controls.Input
-          name='emailBody'
-          multiline
-          label='Email Body'
-          inputProps={{ maxLength: 400 }}
-          placeholder='Please provide as much details about your question.'
-          value={values.emailBody}
-          onChange={handleInputChange}
-        />
-        <p
-          style={{
-            color: 'grey',
-            paddingLeft: '10px',
-            paddingBottom: '20px',
-            fontSize: '12px',
-          }}
-        >
-          {values.emailBody.length} of 400 maximum characters
-        </p>
-        <Button
-          style={{ marginLeft: '10px' }}
-          variant='outlined'
-          type='submit'
-          color='primary'
-          endIcon={<EmailOutlined />}
-        >
-          Send Email
-        </Button>
-      </Form>
+            <Controls.Input
+              name='emailBody'
+              multiline
+              label='Email Body'
+              inputProps={{ maxLength: 400 }}
+              placeholder='Please provide as much details about your question.'
+              value={values.emailBody}
+              onChange={handleInputChange}
+            />
+            <p
+              style={{
+                color: 'grey',
+                paddingLeft: '10px',
+                paddingBottom: '20px',
+                fontSize: '12px',
+              }}
+            >
+              {values.emailBody.length} of 400 maximum characters
+            </p>
+            <Button
+              style={{ marginLeft: '10px' }}
+              variant='outlined'
+              type='submit'
+              color='primary'
+              endIcon={<EmailOutlined />}
+            >
+              Send Email
+            </Button>
+          </Form>
+        </>
+      )}
     </div>
   );
 };
