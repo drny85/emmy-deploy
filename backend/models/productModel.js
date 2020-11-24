@@ -13,6 +13,7 @@ const productSchema = mongoose.Schema(
       ref: 'Category',
       required: true,
     },
+    images: { type: Array, default: [] },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   },
   { timestamps: true }

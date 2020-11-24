@@ -53,10 +53,20 @@ header {
   transform: scale(1.2);
 }
 
+.imagesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+  padding: 0.7rem;
+  height: 100px;
+}
+
 .imgHover {
   transition: transform 400ms ease-in;
-  max-height: 250px;
-  width: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  /* max-height: 250px;
+  width: auto; */
 }
 .py-3 {
   padding: 3px 0px;

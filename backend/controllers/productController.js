@@ -12,7 +12,10 @@ export const addProduct = asyncHandler(async (req, res) => {
     imageUrl,
     estimatedDelivery,
     available,
+    images,
   } = req.body;
+
+  console.log(req.body);
 
   const product = await Product.create({
     name,
@@ -22,6 +25,7 @@ export const addProduct = asyncHandler(async (req, res) => {
     category,
     estimatedDelivery,
     available,
+    images,
     user: req.user._id,
   });
 
@@ -58,6 +62,7 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
     imageUrl,
     category,
     estimatedDelivery,
+    images,
     available,
   } = req.body;
   const updated = await Product.findByIdAndUpdate(
@@ -69,6 +74,7 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
       imageUrl,
       category,
       estimatedDelivery,
+      images,
       available,
     },
     { new: true }

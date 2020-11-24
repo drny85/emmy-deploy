@@ -77,6 +77,7 @@ const ProductDetails = ({ match, history, full }) => {
   };
   const handleImageClick = (e) => {
     const img = e.target.src;
+
     setModalImage(img);
     setOpen(true);
   };
@@ -198,99 +199,74 @@ const ProductDetails = ({ match, history, full }) => {
                   >
                     Add to Cart
                   </Button>
-                  {/* {user?.isAdmin && (
-                    <Button
-                      onClick={() =>
-                        history.push(`/admin/product/edit/${product._id}`)
-                      }
-                      style={{ marginTop: '10px', color: 'red' }}
-                      startIcon={<EditOutlinedIcon />}
-                      variant='outlined'
-                      size='medium'
-                      color='secondary'
-                    >
-                      Edit Product
-                    </Button>
-                  )} */}
                 </ListItem>
               </List>
             </Grid>
           </Grid>
         </Paper>
-        <Paper>
-          {product.images && (
-            <Paper>
-              <Typography
-                style={{ paddingTop: '10px', paddingLeft: '10px' }}
-                variant='h6'
-              >
-                Additional Images
-              </Typography>
 
-              <Grid
-                justify='center'
-                alignItems='center'
-                style={{ padding: '20px' }}
-                direction='row'
-                container
-              >
-                {product.images.map((image, i) => {
-                  return (
-                    <Grid key={i} item xs={12} sm={4}>
-                      <img
-                        className='imgHover'
-                        onClick={handleImageClick}
-                        style={{ padding: '1rem', borderRadius: '20px' }}
-                        src={image}
-                        alt='nice frame'
-                      />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Paper>
-          )}
+        {product.images && product.images.length > 0 && (
+          <div className='mainImages'>
+            <h4 style={{ textAlign: 'center', margin: '25px 0px' }}>
+              Additional Images
+            </h4>
+            <div className='imagesGrid'>
+              {product.images.map((image, i) => {
+                return (
+                  <div style={{ height: '100%', maxHeight: '12rem' }} key={i}>
+                    <img
+                      className='imgHover'
+                      onClick={handleImageClick}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                      src={image}
+                      alt='imag'
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
-          <Dialog fullWidth onBackdropClick={() => setOpen(false)} open={open}>
-            <DialogTitle>
-              <IconButton
-                aria-label='close'
-                className={classes.closeButton}
-                onClick={() => {
-                  setOpen(false);
-                  setModalImage('');
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-            </DialogTitle>
+        <Dialog fullWidth onBackdropClick={() => setOpen(false)} open={open}>
+          <DialogTitle>
+            <IconButton
+              aria-label='close'
+              className={classes.closeButton}
+              onClick={() => {
+                setOpen(false);
+                setModalImage('');
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
 
-            <DialogContent style={{ marginTop: '10px' }}>
-              <Card>
-                <CardMedia
-                  height='600'
-                  component='img'
-                  image={product.imageUrl}
-                />
-              </Card>
-            </DialogContent>
-          </Dialog>
-          <Dialog open={noSizeSelected} fullWidth>
-            <DialogTitle>No Size Selected</DialogTitle>
-            <DialogContent>
-              <Typography variant='body1'>Please select a size</Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => setNoSizeSelected(false)}
-                color='secondary'
-                variant='outlined'
-              >
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </Paper>
+          <DialogContent style={{ marginTop: '10px' }}>
+            <Card>
+              <CardMedia height='600' component='img' image={modalImage} />
+            </Card>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={noSizeSelected} fullWidth>
+          <DialogTitle>No Size Selected</DialogTitle>
+          <DialogContent>
+            <Typography variant='body1'>Please select a size</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setNoSizeSelected(false)}
+              color='secondary'
+              variant='outlined'
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
   );

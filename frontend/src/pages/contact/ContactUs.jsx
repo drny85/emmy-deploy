@@ -100,6 +100,7 @@ const ContactUs = ({ history }) => {
       };
 
       const { data } = await axios.post('/api/contact-us', msg);
+      console.log(data);
       if (data) {
         setSuccess(true);
         setTimeout(() => {
@@ -113,7 +114,12 @@ const ContactUs = ({ history }) => {
 
   useEffect(() => {
     if (user) {
-      setValues({ ...values, email: user.email });
+      setValues({
+        ...values,
+        email: user.email,
+        name: user.name,
+        lastName: user.lastName,
+      });
     }
     if (subject === 'product') {
       dispatch(getCategories());
@@ -138,7 +144,7 @@ const ContactUs = ({ history }) => {
     >
       {success ? (
         <h4 style={{ textAlign: 'center', marginTop: '100px' }}>
-          You email has been. We will cantact you witthin 48 hrs
+          You email has been. We will cantact you within 48 hrs
         </h4>
       ) : (
         <>

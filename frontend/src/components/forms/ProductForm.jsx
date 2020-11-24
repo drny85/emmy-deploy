@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from '../../utils/axios';
 import Message from '../Message';
 import Loader from '../Loader';
+import { useRef } from 'react';
 
 const initialValues = {
   name: '',
@@ -22,9 +23,16 @@ const initialValues = {
 
 const ProductForm = () => {
   const dispatch = useDispatch();
-
-  const [uploading, setUploading] = useState(false);
+  const image1Ref = useRef();
+  const [imageError, setImageError] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [images, setImages] = useState({
+    imageUrl: '',
+    image1: '',
+    image2: '',
+    image3: '',
+  });
   const { error } = useSelector((state) => state.productsData);
   const { categories, loading } = useSelector((state) => state.categoriesData);
 
@@ -42,9 +50,7 @@ const ProductForm = () => {
     if ('category' in fieldValues)
       temp.category =
         fieldValues.category.length !== 0 ? '' : 'This field is required';
-    if ('imageUrl' in fieldValues)
-      temp.imageUrl =
-        fieldValues.imageUrl.length !== 0 ? '' : 'An Image is required';
+
     if ('estimatedDelivery' in fieldValues)
       temp.estimatedDelivery =
         fieldValues.estimatedDelivery.length !== 0
@@ -67,7 +73,10 @@ const ProductForm = () => {
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
+    const name = e.target.name;
+    console.log(name);
     const formData = new FormData();
+
     formData.append('imageUrl', file);
     setUploading(true);
     try {
@@ -77,23 +86,37 @@ const ProductForm = () => {
         },
       };
       const { data } = await axios.post('/api/upload', formData, config);
-      setImageUrl(data);
+
+      setImages({ ...images, [name]: data });
       setUploading(false);
-      values.imageUrl = data;
     } catch (error) {
       console.log(error);
       setUploading(false);
+    } finally {
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(validate());
+    if (
+      images.imageUrl === '' ||
+      images.image1 === '' ||
+      images.image2 === '' ||
+      images.image3 === ''
+    ) {
+      setImageError('All images fields are required');
+      return;
+    }
     if (validate()) {
-      values.imageUrl = imageUrl;
+      values.imageUrl = images.imageUrl;
       console.log(values);
-      dispatch(addProduct({ ...values }));
-      setImageUrl('');
+      dispatch(
+        addProduct({
+          ...values,
+          images: [images.image1, images.image2, images.image3],
+        })
+      );
+      setImages({ imageUrl: '', image1: '', image2: '', image3: '' });
 
       resetForm();
     }
@@ -109,7 +132,10 @@ const ProductForm = () => {
     <div className='form_div' style={{ maxWidth: '980px' }}>
       <Form onSubmit={handleSubmit}>
         <Grid container>
-          {error && <Message type='error'>{error}</Message>}
+          {error ||
+            (imageError && (
+              <Message type='error'>{error || imageError}</Message>
+            ))}
           <Grid item sx={12} md={12}>
             <Controls.Input
               name='name'
@@ -146,15 +172,60 @@ const ProductForm = () => {
               onChange={handleInputChange}
               options={categories}
             />
-
+            <label
+              style={{ marginLeft: '10px', fontWeight: 'bold' }}
+              htmlFor='images'
+            >
+              Pick Main Image
+            </label>
             <Controls.Input
               name='imageUrl'
-              label='Image'
-              error={errors.imageUrl}
+              label='Main Image'
               type='file'
               inputProps={{ autoFocus: true, disabled: uploading }}
               onChange={handleImage}
             />
+            <Grid item container>
+              <Grid item container sx={12}>
+                <label
+                  style={{ marginLeft: '10px', fontWeight: 'bold' }}
+                  htmlFor='images'
+                >
+                  Pick Thumbnail Images
+                </label>
+              </Grid>
+              <Grid item sm={4}>
+                <Controls.Input
+                  name='image1'
+                  label='Image 1'
+                  type='file'
+                  inputProps={{
+                    autoFocus: true,
+                    disabled: uploading,
+                    hidden: true,
+                  }}
+                  onChange={handleImage}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <Controls.Input
+                  name='image2'
+                  label='Image 2'
+                  type='file'
+                  inputProps={{ autoFocus: true, disabled: uploading }}
+                  onChange={handleImage}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <Controls.Input
+                  name='image3'
+                  label='Image 3'
+                  type='file'
+                  inputProps={{ autoFocus: true, disabled: uploading }}
+                  onChange={handleImage}
+                />
+              </Grid>
+            </Grid>
 
             <Controls.Input
               name='estimatedDelivery'

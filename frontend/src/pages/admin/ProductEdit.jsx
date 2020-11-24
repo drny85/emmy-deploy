@@ -55,6 +55,12 @@ const ProductEdit = ({ match, history }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [show, setShow] = useState(false);
+  const [images, setImages] = useState({
+    imageUrl: '',
+    image1: '',
+    image2: '',
+    image3: '',
+  });
   const productId = match.params.id;
   const { product, loading, error } = useSelector(
     (state) => state.productsData
@@ -108,6 +114,7 @@ const ProductEdit = ({ match, history }) => {
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
+    const name = e.target.name;
     const formData = new FormData();
     formData.append('imageUrl', file);
 
@@ -118,7 +125,7 @@ const ProductEdit = ({ match, history }) => {
         },
       };
       const { data } = await axios.post('/api/upload', formData, config);
-      setImageUrl(data);
+      setImages({ ...images, [name]: data });
       setUploading(true);
     } catch (error) {
       console.log(error);
@@ -161,14 +168,21 @@ const ProductEdit = ({ match, history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    let imgs = null;
     if (validate()) {
       if (uploading) {
-        values.imageUrl = imageUrl;
+        values.imageUrl = images.imageUrl;
+        imgs = [images.image1, images.image2, images.image3];
+        if (imageUrl === '') {
+          values.imageUrl = images.imageUrl;
+        }
       }
       //
+      setUploading(false);
       console.log(values);
-      const updated = await dispatch(updateProduct({ ...values }));
+      const updated = await dispatch(
+        updateProduct({ ...values, images: imgs })
+      );
       if (updated) {
         setImageUrl('');
 
@@ -193,9 +207,19 @@ const ProductEdit = ({ match, history }) => {
     if (product) {
       setValues({ ...product });
       setAvailable(product.available ? 'yes' : 'no');
+      if (product.images) {
+        setImages({
+          imageUrl: product.imageUrl,
+          image1: product.images[0],
+          image2: product.images[1],
+          image3: product.images[2],
+        });
+      }
     }
     // eslint-disable-next-line
   }, [product]);
+
+  console.log(images);
 
   if (loading) return <Loader />;
   return (
@@ -259,13 +283,58 @@ const ProductEdit = ({ match, history }) => {
               onChange={handleInputChange}
             />
 
+            <label
+              style={{ marginLeft: '10px', fontWeight: 'bold' }}
+              htmlFor='images'
+            >
+              Pick Main Image
+            </label>
             <Controls.Input
               name='imageUrl'
-              label='Image'
+              label='Main Image'
               type='file'
-              inputProps={{ autoFocus: true, disabled: uploading }}
+              inputProps={{ autoFocus: true }}
               onChange={handleImage}
             />
+            <Grid item container>
+              <Grid item container sx={12}>
+                <label
+                  style={{ marginLeft: '10px', fontWeight: 'bold' }}
+                  htmlFor='images'
+                >
+                  Pick Thumbnail Images
+                </label>
+              </Grid>
+              <Grid item sm={4}>
+                <Controls.Input
+                  name='image1'
+                  label='Image 1'
+                  type='file'
+                  inputProps={{
+                    autoFocus: true,
+                  }}
+                  onChange={handleImage}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <Controls.Input
+                  name='image2'
+                  label='Image 2'
+                  type='file'
+                  inputProps={{ autoFocus: true }}
+                  onChange={handleImage}
+                />
+              </Grid>
+              <Grid item sm={4}>
+                <Controls.Input
+                  name='image3'
+                  label='Image 3'
+                  type='file'
+                  inputProps={{ autoFocus: true }}
+                  onChange={handleImage}
+                />
+              </Grid>
+            </Grid>
 
             <Controls.Input
               name='estimatedDelivery'
