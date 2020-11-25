@@ -8,7 +8,9 @@ const ProductCard = ({ product, onClick }) => {
     <div className='product_card_container'>
       <div
         className='product_card_image'
-        style={{ backgroundImage: `url(${product.imageUrl})` }}
+        style={{
+          backgroundImage: `url(${product.imageUrl})`,
+        }}
       ></div>
       <div className='product_card_body'>
         <div className='price_title'>

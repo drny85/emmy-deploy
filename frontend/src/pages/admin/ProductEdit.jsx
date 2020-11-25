@@ -14,6 +14,8 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import axios from '../../utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ProductPreview from '../../components/ProductPreview';
+
 import Controls from '../../components/controls/Controls';
 import { Form, useForm } from '../../components/useForm';
 import Loader from '../../components/Loader';
@@ -42,9 +44,10 @@ const useStyles = makeStyles((theme) => ({
     alignContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    minWidth: '568px',
-    width: '70vw',
+    minWidth: '560px',
+    width: '90vw',
     margin: '0 auto',
+    maxWidth: '1080px',
   },
   btn: {
     backgroundColor: theme.palette.error.main,
@@ -224,161 +227,181 @@ const ProductEdit = ({ match, history }) => {
   if (loading) return <Loader />;
   return (
     <div className={classes.root}>
-      <Form onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid
-            item
-            container
-            justify='space-between'
-            style={{ padding: '20px 6px' }}
-          >
-            <Typography align='center' variant='h4'>
-              Edit/Update Product
-            </Typography>
-            <Button
-              startIcon={<DeleteOutlineIcon />}
-              variant='contained'
-              color='primary'
-              className={classes.btn}
-              onClick={() => setShow(true)}
-            >
-              Delete
-            </Button>
-          </Grid>
-          {error && <Message type='error'>{error}</Message>}
-          <Divider orientation='vertical' flexItem />
-          <Grid item sx={12} md={12}>
-            <Controls.Input
-              name='name'
-              className='capitalize'
-              value={values.name}
-              error={errors.name}
-              label='Product Name'
-              onChange={handleInputChange}
-            />
-            <Controls.Input
-              name='description'
-              value={values.description}
-              error={errors.description}
-              label='Product Description'
-              onChange={handleInputChange}
-            />
-            <Controls.Input
-              name='price'
-              value={values.price}
-              error={errors.price}
-              type='number'
-              step='1'
-              min='0'
-              label='Price'
-              onChange={handleInputChange}
-            />
-            <Controls.Select
-              name='category'
-              value={values.category}
-              error={errors.category}
-              options={categories}
-              inputProps={{ styles: { textTransform: 'capitalize' } }}
-              label='Category or Collection'
-              onChange={handleInputChange}
-            />
+      <Grid
+        item
+        container
+        justify='space-between'
+        style={{ padding: '20px 6px' }}
+      >
+        <Typography align='center' variant='h4'>
+          Edit/Update Product
+        </Typography>
+        <Button
+          startIcon={<DeleteOutlineIcon />}
+          variant='contained'
+          color='primary'
+          className={classes.btn}
+          onClick={() => setShow(true)}
+        >
+          Delete
+        </Button>
+      </Grid>
+      <div
+        style={{
+          width: '95%',
+          height: '0.5px',
+          backgroundColor: 'gray',
+          opacity: '0.4',
+          margin: '10px 0px',
+        }}
+      />
+      <Grid container>
+        <Grid item xs={7}>
+          <Form onSubmit={handleSubmit}>
+            <Grid container>
+              {error && <Message type='error'>{error}</Message>}
+              <Divider orientation='vertical' flexItem />
+              <Grid item sx={12} md={12}>
+                <Controls.Input
+                  name='name'
+                  className='capitalize'
+                  focused={true}
+                  value={values.name}
+                  error={errors.name}
+                  label='Product Name'
+                  onChange={handleInputChange}
+                />
+                <Controls.Input
+                  name='description'
+                  value={values.description}
+                  error={errors.description}
+                  label='Product Description'
+                  onChange={handleInputChange}
+                />
+                <Controls.Input
+                  name='price'
+                  value={values.price}
+                  error={errors.price}
+                  type='number'
+                  step='1'
+                  min='0'
+                  label='Price'
+                  onChange={handleInputChange}
+                />
+                <Controls.Select
+                  name='category'
+                  value={values.category}
+                  error={errors.category}
+                  options={categories}
+                  inputProps={{ styles: { textTransform: 'capitalize' } }}
+                  label='Category or Collection'
+                  onChange={handleInputChange}
+                />
 
-            <label
-              style={{ marginLeft: '10px', fontWeight: 'bold' }}
-              htmlFor='images'
-            >
-              Pick Main Image
-            </label>
-            <Controls.Input
-              name='imageUrl'
-              label='Main Image'
-              type='file'
-              inputProps={{ autoFocus: true }}
-              onChange={handleImage}
-            />
-            <Grid item container>
-              <Grid item container sx={12}>
                 <label
                   style={{ marginLeft: '10px', fontWeight: 'bold' }}
                   htmlFor='images'
                 >
-                  Pick Thumbnail Images
+                  Pick Main Image
                 </label>
-              </Grid>
-              <Grid item sm={4}>
                 <Controls.Input
-                  name='image1'
-                  label='Image 1'
-                  type='file'
-                  inputProps={{
-                    autoFocus: true,
-                  }}
-                  onChange={handleImage}
-                />
-              </Grid>
-              <Grid item sm={4}>
-                <Controls.Input
-                  name='image2'
-                  label='Image 2'
+                  name='imageUrl'
+                  label='Main Image'
+                  focused={true}
                   type='file'
                   inputProps={{ autoFocus: true }}
                   onChange={handleImage}
                 />
-              </Grid>
-              <Grid item sm={4}>
+                <Grid item container>
+                  <Grid item container sx={12}>
+                    <label
+                      style={{ marginLeft: '10px', fontWeight: 'bold' }}
+                      htmlFor='images'
+                    >
+                      Pick Thumbnail Images
+                    </label>
+                  </Grid>
+                  <Grid item sm={4}>
+                    <Controls.Input
+                      name='image1'
+                      label='Image 1'
+                      focused={true}
+                      type='file'
+                      inputProps={{
+                        autoFocus: true,
+                      }}
+                      onChange={handleImage}
+                    />
+                  </Grid>
+                  <Grid item sm={4}>
+                    <Controls.Input
+                      name='image2'
+                      label='Image 2'
+                      focused={true}
+                      type='file'
+                      inputProps={{ autoFocus: true }}
+                      onChange={handleImage}
+                    />
+                  </Grid>
+                  <Grid item sm={4}>
+                    <Controls.Input
+                      name='image3'
+                      label='Image 3'
+                      focused={true}
+                      type='file'
+                      inputProps={{ autoFocus: true }}
+                      onChange={handleImage}
+                    />
+                  </Grid>
+                </Grid>
+
                 <Controls.Input
-                  name='image3'
-                  label='Image 3'
-                  type='file'
-                  inputProps={{ autoFocus: true }}
-                  onChange={handleImage}
+                  name='estimatedDelivery'
+                  value={values.estimatedDelivery}
+                  label='Estimated Delivery Days'
+                  onChange={handleInputChange}
                 />
+                <Controls.RadioGroup
+                  name='available'
+                  value={isAvailable}
+                  onChange={handleAvailabitity}
+                  label='Is Available'
+                  items={[
+                    { id: 'yes', title: 'Yes' },
+                    { id: 'no', title: 'No' },
+                  ]}
+                />
+                <Divider light />
+                <div style={{ marginTop: '15px' }}>
+                  <Controls.Button type='submit' text='Update Product' />
+                  <Controls.Button
+                    text='Reset Form'
+                    color='default'
+                    onClick={resetForm}
+                  />
+                </div>
               </Grid>
             </Grid>
-
-            <Controls.Input
-              name='estimatedDelivery'
-              value={values.estimatedDelivery}
-              label='Estimated Delivery Days'
-              onChange={handleInputChange}
-            />
-            <Controls.RadioGroup
-              name='available'
-              value={isAvailable}
-              onChange={handleAvailabitity}
-              label='Is Available'
-              items={[
-                { id: 'yes', title: 'Yes' },
-                { id: 'no', title: 'No' },
-              ]}
-            />
-            <Divider light />
-            <div style={{ marginTop: '15px' }}>
-              <Controls.Button type='submit' text='Update Product' />
-              <Controls.Button
-                text='Reset Form'
-                color='default'
-                onClick={resetForm}
-              />
-            </div>
-          </Grid>
+          </Form>
+          <Dialog open={show} onClose={handleClose}>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure that you want to empty the cart?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color='primary'>
+                No
+              </Button>
+              <Button onClick={confirmDelete} style={{ color: 'red' }}>
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
-      </Form>
-      <Dialog open={show} onClose={handleClose}>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure that you want to empty the cart?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color='primary'>
-            No
-          </Button>
-          <Button onClick={confirmDelete} style={{ color: 'red' }}>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+        <ProductPreview images={images} values={values} />
+      </Grid>
     </div>
   );
 };

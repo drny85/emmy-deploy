@@ -6,10 +6,13 @@ import { addProduct } from '../../reduxStore/actions/products';
 import { getCategories } from '../../reduxStore/actions/categoryActions';
 import { useDispatch, useSelector } from 'react-redux';
 
+import '../../components/cards/ProductCard.css';
+
 import axios from '../../utils/axios';
 import Message from '../Message';
 import Loader from '../Loader';
-import { useRef } from 'react';
+
+import ProductPreview from '../ProductPreview';
 
 const initialValues = {
   name: '',
@@ -23,7 +26,7 @@ const initialValues = {
 
 const ProductForm = () => {
   const dispatch = useDispatch();
-  const image1Ref = useRef();
+
   const [imageError, setImageError] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -129,125 +132,134 @@ const ProductForm = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className='form_div' style={{ maxWidth: '980px' }}>
-      <Form onSubmit={handleSubmit}>
-        <Grid container>
-          {error ||
-            (imageError && (
-              <Message type='error'>{error || imageError}</Message>
-            ))}
-          <Grid item sx={12} md={12}>
-            <Controls.Input
-              name='name'
-              className='capitalize'
-              inputProps={{ style: { textTransform: 'capitalize' } }}
-              value={values.name}
-              error={errors.name}
-              label='Product Name'
-              onChange={handleInputChange}
-            />
-            <Controls.Input
-              name='description'
-              value={values.description}
-              multiline={true}
-              error={errors.description}
-              label='Product Description'
-              onChange={handleInputChange}
-            />
-            <Controls.Input
-              name='price'
-              value={values.price}
-              error={errors.price}
-              type='number'
-              step='1'
-              min='0'
-              label='Price'
-              onChange={handleInputChange}
-            />
-            <Controls.Select
-              name='category'
-              value={values.category}
-              error={errors.category}
-              label='Select a category or collection'
-              onChange={handleInputChange}
-              options={categories}
-            />
-            <label
-              style={{ marginLeft: '10px', fontWeight: 'bold' }}
-              htmlFor='images'
-            >
-              Pick Main Image
-            </label>
-            <Controls.Input
-              name='imageUrl'
-              label='Main Image'
-              type='file'
-              inputProps={{ autoFocus: true, disabled: uploading }}
-              onChange={handleImage}
-            />
-            <Grid item container>
-              <Grid item container sx={12}>
+    <div className='form_div' style={{ maxWidth: '1280px' }}>
+      <Grid container>
+        <Grid item xs={12} sm={7}>
+          <Form onSubmit={handleSubmit}>
+            <Grid container>
+              {error ||
+                (imageError && (
+                  <Message type='error'>{error || imageError}</Message>
+                ))}
+              <Grid item sx={12} md={12}>
+                <Controls.Input
+                  name='name'
+                  className='capitalize'
+                  inputProps={{ style: { textTransform: 'capitalize' } }}
+                  value={values.name}
+                  error={errors.name}
+                  label='Product Name'
+                  onChange={handleInputChange}
+                />
+                <Controls.Input
+                  name='description'
+                  value={values.description}
+                  multiline={true}
+                  error={errors.description}
+                  label='Product Description'
+                  onChange={handleInputChange}
+                />
+                <Controls.Input
+                  name='price'
+                  value={values.price}
+                  error={errors.price}
+                  type='number'
+                  step='1'
+                  min='0'
+                  label='Price'
+                  onChange={handleInputChange}
+                />
+                <Controls.Select
+                  name='category'
+                  value={values.category}
+                  error={errors.category}
+                  label='Select a category or collection'
+                  onChange={handleInputChange}
+                  options={categories}
+                />
                 <label
                   style={{ marginLeft: '10px', fontWeight: 'bold' }}
                   htmlFor='images'
                 >
-                  Pick Thumbnail Images
+                  Pick Main Image
                 </label>
-              </Grid>
-              <Grid item sm={4}>
                 <Controls.Input
-                  name='image1'
-                  label='Image 1'
-                  type='file'
-                  inputProps={{
-                    autoFocus: true,
-                    disabled: uploading,
-                    hidden: true,
-                  }}
-                  onChange={handleImage}
-                />
-              </Grid>
-              <Grid item sm={4}>
-                <Controls.Input
-                  name='image2'
-                  label='Image 2'
+                  name='imageUrl'
+                  focused={true}
+                  label='Main Image'
                   type='file'
                   inputProps={{ autoFocus: true, disabled: uploading }}
                   onChange={handleImage}
                 />
-              </Grid>
-              <Grid item sm={4}>
+                <Grid item container>
+                  <Grid item container sx={12}>
+                    <label
+                      style={{ marginLeft: '10px', fontWeight: 'bold' }}
+                      htmlFor='images'
+                    >
+                      Pick Thumbnail Images
+                    </label>
+                  </Grid>
+                  <Grid item sm={4}>
+                    <Controls.Input
+                      name='image1'
+                      focused={true}
+                      label='Image 1'
+                      type='file'
+                      inputProps={{
+                        autoFocus: true,
+                        disabled: uploading,
+                        hidden: true,
+                      }}
+                      onChange={handleImage}
+                    />
+                  </Grid>
+                  <Grid item sm={4}>
+                    <Controls.Input
+                      name='image2'
+                      label='Image 2'
+                      focused={true}
+                      type='file'
+                      inputProps={{ autoFocus: true, disabled: uploading }}
+                      onChange={handleImage}
+                    />
+                  </Grid>
+                  <Grid item sm={4}>
+                    <Controls.Input
+                      name='image3'
+                      label='Image 3'
+                      focused={true}
+                      type='file'
+                      inputProps={{ autoFocus: true, disabled: uploading }}
+                      onChange={handleImage}
+                    />
+                  </Grid>
+                </Grid>
+
                 <Controls.Input
-                  name='image3'
-                  label='Image 3'
-                  type='file'
-                  inputProps={{ autoFocus: true, disabled: uploading }}
-                  onChange={handleImage}
+                  name='estimatedDelivery'
+                  placeholder='Days delivery might take. Ex. 2'
+                  value={values.estimatedDelivery}
+                  error={errors.estimatedDelivery}
+                  label='Estimated Delivery Days'
+                  type='number'
+                  onChange={handleInputChange}
                 />
+                <Divider light />
+                <div style={{ marginTop: '15px' }}>
+                  <Controls.Button type='submit' text='Add Product' />
+                  <Controls.Button
+                    text='Reset Form'
+                    color='default'
+                    onClick={resetForm}
+                  />
+                </div>
               </Grid>
             </Grid>
-
-            <Controls.Input
-              name='estimatedDelivery'
-              placeholder='Days delivery might take. Ex. 2'
-              value={values.estimatedDelivery}
-              error={errors.estimatedDelivery}
-              label='Estimated Delivery Days'
-              type='number'
-              onChange={handleInputChange}
-            />
-            <Divider light />
-            <div style={{ marginTop: '15px' }}>
-              <Controls.Button type='submit' text='Add Product' />
-              <Controls.Button
-                text='Reset Form'
-                color='default'
-                onClick={resetForm}
-              />
-            </div>
-          </Grid>
+          </Form>
         </Grid>
-      </Form>
+        <ProductPreview values={values} images={images} />
+      </Grid>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Grid } from '@material-ui/core';
 import React from 'react';
 import { useState } from 'react';
 import ProductForm from '../../components/forms/ProductForm';
@@ -13,16 +12,15 @@ const AddProduct = () => {
         justifyContent: 'center',
         marginTop: '15px',
         flexDirection: 'column',
+        width: '100%',
       }}
     >
-      <h3>Adding a Product</h3>
+      <div style={{ marginBottom: '1rem' }}>
+        {' '}
+        <h3 style={{ marginLeft: '20px' }}>Adding a Product</h3>
+      </div>
 
-      <Grid container>
-        <Grid item xs={12} med={7}>
-          <ProductForm />
-        </Grid>
-        <Grid item xs={12} md={5}></Grid>
-      </Grid>
+      <ProductForm />
     </div>
   );
 };
