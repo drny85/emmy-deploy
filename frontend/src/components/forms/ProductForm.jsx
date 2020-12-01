@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Divider, Grid } from '@material-ui/core';
+import React, { useEffect, useState, useRef } from 'react';
+import { Divider, Grid, Snackbar } from '@material-ui/core';
 import Controls from '../controls/Controls';
 import { useForm, Form } from '../useForm';
 import { addProduct } from '../../reduxStore/actions/products';
@@ -13,6 +13,7 @@ import Message from '../Message';
 import Loader from '../Loader';
 
 import ProductPreview from '../ProductPreview';
+import { Alert } from '@material-ui/lab';
 
 const initialValues = {
   name: '',
@@ -28,6 +29,11 @@ const ProductForm = () => {
   const dispatch = useDispatch();
 
   const [imageError, setImageError] = useState(null);
+  const imgref = useRef();
+  const imgref1 = useRef();
+  const imgref2 = useRef();
+  const imgref3 = useRef();
+  const [added, setAdded] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [uploading, setUploading] = useState(false);
   const [images, setImages] = useState({
@@ -38,6 +44,13 @@ const ProductForm = () => {
   });
   const { error } = useSelector((state) => state.productsData);
   const { categories, loading } = useSelector((state) => state.categoriesData);
+
+  const resetImages = () => {
+    imgref.current.value = '' || null;
+    imgref1.current.value = '' || null;
+    imgref2.current.value = '' || null;
+    imgref3.current.value = '' || null;
+  };
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
@@ -77,7 +90,7 @@ const ProductForm = () => {
   const handleImage = async (e) => {
     const file = e.target.files[0];
     const name = e.target.name;
-    console.log(name);
+
     const formData = new FormData();
 
     formData.append('imageUrl', file);
@@ -112,7 +125,7 @@ const ProductForm = () => {
     }
     if (validate()) {
       values.imageUrl = images.imageUrl;
-      console.log(values);
+
       dispatch(
         addProduct({
           ...values,
@@ -122,6 +135,11 @@ const ProductForm = () => {
       setImages({ imageUrl: '', image1: '', image2: '', image3: '' });
 
       resetForm();
+      resetImages();
+      setAdded(true);
+      setTimeout(() => {
+        setAdded(false);
+      }, 5000);
     }
   };
 
@@ -185,6 +203,7 @@ const ProductForm = () => {
                 </label>
                 <Controls.Input
                   name='imageUrl'
+                  inputRef={imgref}
                   focused={true}
                   label='Main Image'
                   type='file'
@@ -205,6 +224,7 @@ const ProductForm = () => {
                       name='image1'
                       focused={true}
                       label='Image 1'
+                      inputRef={imgref1}
                       type='file'
                       inputProps={{
                         autoFocus: true,
@@ -217,6 +237,7 @@ const ProductForm = () => {
                   <Grid item sm={4}>
                     <Controls.Input
                       name='image2'
+                      inputRef={imgref2}
                       label='Image 2'
                       focused={true}
                       type='file'
@@ -228,6 +249,7 @@ const ProductForm = () => {
                     <Controls.Input
                       name='image3'
                       label='Image 3'
+                      inputRef={imgref3}
                       focused={true}
                       type='file'
                       inputProps={{ autoFocus: true, disabled: uploading }}
@@ -260,6 +282,13 @@ const ProductForm = () => {
         </Grid>
         <ProductPreview values={values} images={images} />
       </Grid>
+      <Snackbar
+        open={added}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        autoHideDuration={5000}
+      >
+        <Alert severity='success'>Product has been added!</Alert>
+      </Snackbar>
     </div>
   );
 };

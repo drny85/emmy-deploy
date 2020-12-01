@@ -9,7 +9,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import axios from '../../utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
 const ProductEdit = ({ match, history }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const imgref = useRef();
+  const imgref1 = useRef();
+  const imgref2 = useRef();
+  const imgref3 = useRef();
   const [show, setShow] = useState(false);
   const [images, setImages] = useState({
     imageUrl: '',
@@ -136,6 +140,13 @@ const ProductEdit = ({ match, history }) => {
     }
   };
 
+  const resetImages = () => {
+    imgref.current.value = '' || null;
+    imgref1.current.value = '' || null;
+    imgref2.current.value = '' || null;
+    imgref3.current.value = '' || null;
+  };
+
   const handleAvailabitity = (event) => {
     const value = event.target.value;
     if (value === 'yes') {
@@ -182,7 +193,7 @@ const ProductEdit = ({ match, history }) => {
       }
       //
       setUploading(false);
-      console.log(values);
+
       const updated = await dispatch(
         updateProduct({ ...values, images: imgs })
       );
@@ -190,6 +201,7 @@ const ProductEdit = ({ match, history }) => {
         setImageUrl('');
 
         resetForm();
+        resetImages();
         history.push('/admin/products');
       }
     }
@@ -221,8 +233,6 @@ const ProductEdit = ({ match, history }) => {
     }
     // eslint-disable-next-line
   }, [product]);
-
-  console.log(images);
 
   if (loading) return <Loader />;
   return (
@@ -307,9 +317,9 @@ const ProductEdit = ({ match, history }) => {
                 <Controls.Input
                   name='imageUrl'
                   label='Main Image'
+                  inputRef={imgref}
                   focused={true}
                   type='file'
-                  inputProps={{ autoFocus: true }}
                   onChange={handleImage}
                 />
                 <Grid item container>
@@ -325,11 +335,9 @@ const ProductEdit = ({ match, history }) => {
                     <Controls.Input
                       name='image1'
                       label='Image 1'
+                      inputRef={imgref1}
                       focused={true}
                       type='file'
-                      inputProps={{
-                        autoFocus: true,
-                      }}
                       onChange={handleImage}
                     />
                   </Grid>
@@ -337,19 +345,19 @@ const ProductEdit = ({ match, history }) => {
                     <Controls.Input
                       name='image2'
                       label='Image 2'
+                      inputRef={imgref2}
                       focused={true}
                       type='file'
-                      inputProps={{ autoFocus: true }}
                       onChange={handleImage}
                     />
                   </Grid>
                   <Grid item sm={4}>
                     <Controls.Input
+                      inputRef={imgref3}
                       name='image3'
                       label='Image 3'
                       focused={true}
                       type='file'
-                      inputProps={{ autoFocus: true }}
                       onChange={handleImage}
                     />
                   </Grid>
